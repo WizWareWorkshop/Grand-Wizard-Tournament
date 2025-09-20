@@ -1,0 +1,47 @@
+﻿{
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "1.0",
+    "FriendlyName": "Grimoire Plugin",
+    "Description": "A spell crafting node system",
+    "Category": "Game Features",
+    "CreatedBy": "AKO",
+    "CreatedByURL": "",
+    "DocsURL": "",
+    "MarketplaceURL": "",
+    "SupportURL": "",
+    "EnabledByDefault": true,
+    "CanContainContent": true,
+    "IsBetaVersion": false,
+    "IsExperimentalVersion": false,
+    "Installed": false,
+    "Plugins": [
+        {
+            "Name": "Heart",
+            "Enabled": true
+        },
+        {
+            "Name": "Flakes",
+            "Enabled": true
+        }
+    ],
+    "Modules": [
+        {
+            "Name": "GrimoirePlugin",
+            "Type": "Runtime",
+            "LoadingPhase": "Default",
+            "WhitelistedClasses": [
+                "UGrimoireComponent",
+                "USpellNode",
+                "UMagicNode",
+                "UTriggerNode",
+                "UEffectNode",
+                "UConditionNode",
+                "UVariableNode",
+                "UFlowNode",
+                "UGrimoireEditorWidget",
+                "UTutorialManager"
+            ]
+        }
+    ]
+}

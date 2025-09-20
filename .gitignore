@@ -1,0 +1,26 @@
+﻿# Built project files
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Build/
+*.sln
+*.suo
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.opendb
+
+# Logs and temporary files
+*.log
+*.backup
+*.tmp
+
+# IDE files
+.vs/
+.idea/
+
+# Don't ignore these important directories
+!Content/
+!Plugins/
+!Source/
