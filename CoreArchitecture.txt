@@ -1,0 +1,85 @@
+[Base Class: UGWTSpellNode (UObject)]
+  - Properties: NodeID (FGuid), NodeTitle (FText), NodeDescription (FText), NodeCategory (FText), NodeColor (FLinearColor), NodeRarity (EGWTItemRarity)
+  - Connections: InputNodes/OutputNodes (TArray<UGWTSpellNode*>)
+  - Methods: Execute(Context), GetInputPorts(), GetOutputPorts(), CanConnectInput/Output(), AddInput/OutputConnection(), GetNodeType(), GetRarityScaleFactor()
+  - Enums: EGWTSpellComponentType (Magic, Trigger, Effect, Condition, Variable, Flow)
+  |
+  +-- [Concrete Base: UGWTConcreteNode] (Extends UGWTSpellNode)
+      - Adds: NodePosition (FVector2D for editor placement)
+      |
+      +-- [Data System: UGWTDamageSystem, UGWTStatusSystem, UGWTZoneSystem, UGWTHealthComponent] (Static utilities from GDD snippets)
+          - Methods: ApplyDamage(), ApplyStatusEffect(), CreateEffectZone(), GetHealthPercentage()
+      |
+      +-- [Integration Point: UGWTSpellExecutionContext] (Runtime context)
+          - Properties: Target (AActor*), Caster (AActor*), HitResult (FHitResult), Variables (TMap<FName, FGWTVariableValue>)
+          - Methods: SetVariable(), GetVariable(), DuplicateContext()
+      |
+      +-- [GrimoirePlugin: UGWTGrimoire] (Manages spells, integrates with HeartGraph)
+          - Properties: OwnedNodes (TArray<UGWTSpellNode*>), ActiveSpells (TArray<UGWTSpell*>)
+          - Methods: OpenGrimoireMenu(), CompileGraphToAbility(), ReplicateSpellGraph()
+          - Dependencies: HeartGraph (for runtime editing), GAS (for ability execution)
+          |
+          +-- [Node Categories] (All extend UGWTConcreteNode)
+              |
+              +-- [Magic Nodes: UGWTMagicNode] (e.g., UGWTFireMagicNode)
+                  - Inputs: ElementModifier, PowerAmplifier, TargetSelector, DurationModifier
+                  - Outputs: DamageEvent, StatusApplied, SpellCompletion, TargetReference
+                  - Concepts: Function calls, Parameters, Return values
+                  - Rarity Effects: Epic+ adds zones
+              |
+              +-- [Trigger Nodes: UGWTTriggerNode] (e.g., UGWTOnHitTriggerNode)
+                  - Inputs: ConditionModifier, CooldownModifier, EventSource
+                  - Outputs: ActivationSignal, CooldownStarted/Ended, EventData
+                  - Concepts: Event handling, Callbacks, Timing
+                  - Rarity Effects: Legendary reduces cooldown globally
+              |
+              +-- [Effect Nodes: UGWTEffectNode] (e.g., UGWTBurningEffectNode)
+                  - Inputs: EffectModifier, TargetingData, Strength/DurationModifier
+                  - Outputs: EffectApplied/Complete, AffectedTargets, EffectData
+                  - Concepts: Side effects, State changes, Persistence
+                  - Rarity Effects: Legendary persists across waves
+              |
+              +-- [Condition Nodes: UGWTConditionNode] (e.g., UGWTHealthCheckNode)
+                  - Inputs: ConditionValue, ComparisonValue, ConditionType
+                  - Outputs: TruePath, FalsePath, ConditionResult, EvaluationData
+                  - Concepts: If-then-else, Booleans, Decisions
+                  - Rarity Effects: Legendary executes both paths (parallelism)
+              |
+              +-- [Variable Nodes: UGWTVariableNode]
+                  - Inputs: ValueSource, OperationType, OperationValue
+                  - Outputs: CurrentValue, ValueChanged, ChangeAmount
+                  - Concepts: Variables, Operations, Data structures
+                  - Rarity Effects: Epic adds array support
+              |
+              +-- [Flow Nodes: UGWTFlowNode]
+                  - Inputs: LoopCondition, IterationCount
+                  - Outputs: LoopStart/End, IterationData
+                  - Concepts: Loops, Control flow, Nesting
+                  - Rarity Effects: Legendary enables parallel loops
+          |
+          +-- [Multiplayer Extensions] (New: For replication)
+              - [UReplicatedSpellGraph] (Extends HeartGraph's UHeartGraph)
+                - Replicated Properties: SerializedNodes (TArray<uint8> for graph data)
+                - Methods: Server_CompileGraph(), Multicast_ExecuteSpell()
+              - [UGWTSpellAbility] (Extends UGameplayAbility from GAS)
+                - Integrates compiled graph as ability logic
+                - Replication: Client-predicted activation, server validation
+          |
+          +-- [UI/Menu System: UGWTSpellEditorWidget] (UMG-based, extends HeartEditor)
+              - Components: NodePalette, CanvasWorkspace, PropertiesPanel, SpellOverview
+              - Features: Drag-drop nodes, Connection visualization, TestCast button
+              - Multiplayer: Shared editing in co-op mode (via HeartNet)
+          |
+          +-- [Educational/Progression: UGWTEducationalTracker]
+              - Tracks: ConceptMastery (TMap<EGWTConcept, float>), NodeUsage
+              - Methods: SuggestNode(), UnlockRarity()
+              - Innovation: AIIntegration (Call external API for node suggestions)
+          |
+          +-- [Rarity Framework: EGWTItemRarity] (Common to Legendary)
+              - Upgrades: MergeNodes(), GetScaleFactor()
+              - Materials: EssenceOfKnowledge, ArcaneCrystals (Data Assets)
+          |
+          +-- [Innovations] (Beyond Scope)
+              - [UGWTAISuggestor]: Uses xAI/Grok API for procedural node gen
+              - [UGWTModHook]: DataTable for community nodes
+              - [UGWTVRMode]: VR gesture-based node placement
