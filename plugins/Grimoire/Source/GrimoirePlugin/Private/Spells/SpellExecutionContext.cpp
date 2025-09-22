@@ -3,56 +3,56 @@
 #include "Engine/World.h"
 
 // Variable value conversion helpers
-FGWTVariableValue FGWTVariableValue::FromFloat(float Value)
+FVariableValue FVariableValue::FromFloat(float Value)
 {
-    FGWTVariableValue Result;
-    Result.Type = EGWTVariableType::Float;
+    FVariableValue Result;
+    Result.Type = EVariableType::Float;
     Result.FloatValue = Value;
     return Result;
 }
 
-FGWTVariableValue FGWTVariableValue::FromInt(int32 Value)
+FVariableValue FVariableValue::FromInt(int32 Value)
 {
-    FGWTVariableValue Result;
-    Result.Type = EGWTVariableType::Int;
+    FVariableValue Result;
+    Result.Type = EVariableType::Int;
     Result.IntValue = Value;
     return Result;
 }
 
-FGWTVariableValue FGWTVariableValue::FromBool(bool Value)
+FVariableValue FVariableValue::FromBool(bool Value)
 {
-    FGWTVariableValue Result;
-    Result.Type = EGWTVariableType::Bool;
+    FVariableValue Result;
+    Result.Type = EVariableType::Bool;
     Result.BoolValue = Value;
     return Result;
 }
 
-FGWTVariableValue FGWTVariableValue::FromString(const FString& Value)
+FVariableValue FVariableValue::FromString(const FString& Value)
 {
-    FGWTVariableValue Result;
-    Result.Type = EGWTVariableType::String;
+    FVariableValue Result;
+    Result.Type = EVariableType::String;
     Result.StringValue = Value;
     return Result;
 }
 
-FGWTVariableValue FGWTVariableValue::FromVector(const FVector& Value)
+FVariableValue FVariableValue::FromVector(const FVector& Value)
 {
-    FGWTVariableValue Result;
-    Result.Type = EGWTVariableType::Vector;
+    FVariableValue Result;
+    Result.Type = EVariableType::Vector;
     Result.VectorValue = Value;
     return Result;
 }
 
-FGWTVariableValue FGWTVariableValue::FromActor(AActor* Value)
+FVariableValue FVariableValue::FromActor(AActor* Value)
 {
-    FGWTVariableValue Result;
-    Result.Type = EGWTVariableType::Object;
+    FVariableValue Result;
+    Result.Type = EVariableType::Object;
     Result.ObjectValue = Value;
     return Result;
 }
 
 // Context implementation
-void USpellExecutionContext::SetVariable(FName Name, const FGWTVariableValue& Value, bool bGlobal)
+void USpellExecutionContext::SetVariable(FName Name, const FVariableValue& Value, bool bGlobal)
 {
     if (bGlobal)
     {
@@ -64,9 +64,9 @@ void USpellExecutionContext::SetVariable(FName Name, const FGWTVariableValue& Va
     }
 }
 
-FGWTVariableValue USpellExecutionContext::GetVariable(FName Name, bool bGlobal) const
+FVariableValue USpellExecutionContext::GetVariable(FName Name, bool bGlobal) const
 {
-    const FGWTVariableValue* Value = nullptr;
+    const FVariableValue* Value = nullptr;
     
     if (bGlobal)
     {
@@ -82,7 +82,7 @@ FGWTVariableValue USpellExecutionContext::GetVariable(FName Name, bool bGlobal) 
         }
     }
     
-    return Value ? *Value : FGWTVariableValue();
+    return Value ? *Value : FVariableValue();
 }
 
 bool USpellExecutionContext::HasVariable(FName Name, bool bGlobal) const
